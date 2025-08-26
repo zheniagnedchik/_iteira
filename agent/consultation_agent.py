@@ -444,8 +444,8 @@ class ConsultationAgent:
                 state,
                 {"configurable": {"thread_id": session_id, "recursion_limit": 10}}
             )
-            print("---------Updated_state---------")
-            print(updated_state)
+            # print("---------Updated_state---------")
+            # print(updated_state)
             return updated_state
         except Exception as e:
             logger.error(f"[CONSULTATION_AGENT][RUN] Error in run method: {str(e)}")
