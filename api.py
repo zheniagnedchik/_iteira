@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi import FastAPI, UploadFile, File, HTTPException, Request
 from fastapi.responses import JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
@@ -10,6 +10,7 @@ import asyncio
 from pathlib import Path
 from agent.vector_db import VectorDB
 from sync_manager import regen_manager
+from integrations.talkme_integration import handle_talkme_webhook, get_talkme_stats, clear_talkme_session, clear_all_talkme_sessions
 import uvicorn
 
 app = FastAPI(title="Iteira Knowledge Base API", version="1.0.0")
@@ -212,6 +213,33 @@ async def get_regeneration_status():
         "last_regeneration_time": status["last_regeneration_time"],
         "manager_status": "Активен" if not status["is_regenerating"] else "Выполняется перегенерация"
     }
+
+# ========== TALK ME WEBHOOK ENDPOINTS ==========
+
+@app.post("/webhook/talkme")
+async def talkme_webhook_endpoint(request: Request):
+    """Обработчик webhook от Talk Me"""
+    return await handle_talkme_webhook(request)
+
+@app.get("/webhook/talkme/health")
+async def talkme_health_check():
+    """Проверка здоровья Talk Me webhook"""
+    return {"status": "ok", "service": "talkme_webhook"}
+
+@app.get("/webhook/talkme/stats")
+async def talkme_get_stats():
+    """Статистика активных Talk Me сессий"""
+    return await get_talkme_stats()
+
+@app.delete("/webhook/talkme/session/{user_id}")
+async def talkme_clear_session_endpoint(user_id: str):
+    """Очистка Talk Me сессии пользователя"""
+    return await clear_talkme_session(user_id)
+
+@app.delete("/webhook/talkme/sessions")
+async def talkme_clear_all_sessions():
+    """Очистка всех Talk Me сессий"""
+    return await clear_all_talkme_sessions()
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

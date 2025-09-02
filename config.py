@@ -11,6 +11,9 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 # Maximum number of messages in the history
 MAX_HISTORY_LENGTH = 10
 
+# Talk Me API
+BASE_URL_TALKME = os.getenv("BASE_URL_TALKME", "https://api.talkme.ru/")
+
 # Paths to the data and the chroma_db
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(BASE_DIR, "data", "knowledge_base")
