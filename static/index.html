@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iteira Knowledge Base Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .upload-area {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .file-list {
+            margin: 20px 0;
+        }
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 5px 0;
+        }
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .status.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Iteira Knowledge Base Manager</h1>
+        
+        <div class="status" id="status" style="display: none;"></div>
+        
+        <h2>Загрузка файлов</h2>
+        <div class="upload-area">
+            <input type="file" id="fileInput" multiple accept=".xlsx,.xls">
+            <p>Выберите .xlsx или .xls файлы для загрузки</p>
+            <button class="btn btn-primary" onclick="uploadFiles()">Загрузить файлы</button>
+        </div>
+        
+        <h2>Управление базой знаний</h2>
+        <button class="btn btn-success" onclick="regenerateKB()">Перегенерировать базу знаний</button>
+        <button class="btn btn-primary" onclick="getKBStatus()">Проверить статус</button>
+        <button class="btn btn-primary" onclick="getWatcherStatus()">Статус автоотслеживания</button>
+        <button class="btn btn-primary" onclick="getRegenerationStatus()">Статус перегенерации</button>
+        
+        <div id="watcherStatus" style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 4px; display: none;">
+            <strong>Автоматическое отслеживание файлов:</strong>
+            <span id="watcherStatusText">Проверка...</span>
+        </div>
+        
+        <div id="regenerationStatus" style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 4px; display: none;">
+            <strong>Менеджер перегенерации:</strong>
+            <span id="regenerationStatusText">Проверка...</span>
+        </div>
+        
+        <h2>Файлы в базе знаний</h2>
+        <button class="btn btn-primary" onclick="loadFiles()">Обновить список</button>
+        <button class="btn btn-danger" onclick="deleteAllFiles()">Удалить все файлы</button>
+        
+        <div class="file-list" id="fileList">
+            <!-- Список файлов будет загружен здесь -->
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        
+        function showStatus(message, isError = false) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${isError ? 'error' : 'success'}`;
+            status.style.display = 'block';
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 5000);
+        }
+        
+        async function uploadFiles() {
+            const fileInput = document.getElementById('fileInput');
+            const files = fileInput.files;
+            
+            if (files.length === 0) {
+                showStatus('Выберите файлы для загрузки', true);
+                return;
+            }
+            
+            const formData = new FormData();
+            for (let file of files) {
+                formData.append('files', file);
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/files/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showStatus(`Загружено ${result.uploaded_files.length} файлов. База знаний обновлена.`);
+                    loadFiles();
+                    fileInput.value = '';
+                } else {
+                    showStatus(result.detail || 'Ошибка при загрузке файлов', true);
+                }
+            } catch (error) {
+                showStatus('Ошибка соединения с сервером', true);
+            }
+        }
+        
+        async function loadFiles() {
+            try {
+                const response = await fetch(`${API_BASE}/files`);
+                const result = await response.json();
+                
+                const fileList = document.getElementById('fileList');
+                
+                if (result.files.length === 0) {
+                    fileList.innerHTML = '<p>Файлы не найдены</p>';
+                    return;
+                }
+                
+                fileList.innerHTML = result.files.map(file => `
+                    <div class="file-item">
+                        <div>
+                            <strong>${file.name}</strong>
+                            <span style="color: #666; margin-left: 10px;">(${(file.size / 1024).toFixed(1)} KB)</span>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary" onclick="downloadFile('${file.name}')">Скачать</button>
+                            <button class="btn btn-danger" onclick="deleteFile('${file.name}')">Удалить</button>
+                        </div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                showStatus('Ошибка при загрузке списка файлов', true);
+            }
+        }
+        
+        async function deleteFile(filename) {
+            if (!confirm(`Удалить файл ${filename}?`)) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/files/${encodeURIComponent(filename)}`, {
+                    method: 'DELETE'
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showStatus(result.message);
+                    loadFiles();
+                } else {
+                    showStatus(result.detail || 'Ошибка при удалении файла', true);
+                }
+            } catch (error) {
+                showStatus('Ошибка соединения с сервером', true);
+            }
+        }
+        
+        async function deleteAllFiles() {
+            if (!confirm('Удалить ВСЕ файлы? Это действие нельзя отменить!')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/files`, {
+                    method: 'DELETE'
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showStatus(result.message);
+                    loadFiles();
+                } else {
+                    showStatus(result.detail || 'Ошибка при удалении файлов', true);
+                }
+            } catch (error) {
+                showStatus('Ошибка соединения с сервером', true);
+            }
+        }
+        
+        function downloadFile(filename) {
+            window.open(`${API_BASE}/files/${encodeURIComponent(filename)}`, '_blank');
+        }
+        
+        async function regenerateKB() {
+            try {
+                const response = await fetch(`${API_BASE}/knowledge-base/regenerate`, {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showStatus(result.message);
+                } else {
+                    showStatus(result.detail || 'Ошибка при перегенерации базы знаний', true);
+                }
+            } catch (error) {
+                showStatus('Ошибка соединения с сервером', true);
+            }
+        }
+        
+        async function getKBStatus() {
+            try {
+                const response = await fetch(`${API_BASE}/knowledge-base/status`);
+                const result = await response.json();
+                
+                if (response.ok) {
+                    const autoWatch = result.auto_watch_enabled ? 'включено' : 'отключено';
+                    showStatus(`База знаний: ${result.knowledge_base_exists ? 'существует' : 'не создана'}, файлов: ${result.files_count}, автоотслеживание: ${autoWatch}`);
+                } else {
+                    showStatus(result.detail || 'Ошибка при получении статуса', true);
+                }
+            } catch (error) {
+                showStatus('Ошибка соединения с сервером', true);
+            }
+        }
+        
+        async function getWatcherStatus() {
+            try {
+                const response = await fetch(`${API_BASE}/knowledge-base/watcher/status`);
+                const result = await response.json();
+                
+                if (response.ok) {
+                    const statusDiv = document.getElementById('watcherStatus');
+                    const statusText = document.getElementById('watcherStatusText');
+                    
+                    statusText.textContent = result.message;
+                    statusDiv.style.display = 'block';
+                    statusDiv.style.backgroundColor = result.enabled ? '#d4edda' : '#f8d7da';
+                    statusDiv.style.color = result.enabled ? '#155724' : '#721c24';
+                    
+                    showStatus(result.message);
+                } else {
+                    showStatus(result.detail || 'Ошибка при получении статуса watcher', true);
+                }
+            } catch (error) {
+                showStatus('Ошибка соединения с сервером', true);
+            }
+        }
+        
+        async function getRegenerationStatus() {
+            try {
+                const response = await fetch(`${API_BASE}/knowledge-base/regeneration/status`);
+                const result = await response.json();
+                
+                if (response.ok) {
+                    const statusDiv = document.getElementById('regenerationStatus');
+                    const statusText = document.getElementById('regenerationStatusText');
+                    
+                    const message = `${result.manager_status}, последняя перегенерация: ${result.last_regeneration_time}`;
+                    statusText.textContent = message;
+                    statusDiv.style.display = 'block';
+                    statusDiv.style.backgroundColor = result.is_regenerating ? '#fff3cd' : '#d4edda';
+                    statusDiv.style.color = result.is_regenerating ? '#856404' : '#155724';
+                    
+                    showStatus(message);
+                } else {
+                    showStatus(result.detail || 'Ошибка при получении статуса перегенерации', true);
+                }
+            } catch (error) {
+                showStatus('Ошибка соединения с сервером', true);
+            }
+        }
+        
+        // Загружаем список файлов при загрузке страницы
+        window.onload = function() {
+            loadFiles();
+            getKBStatus();
+            getWatcherStatus();
+            getRegenerationStatus();
+        };
+    </script>
+</body>
+</html>
