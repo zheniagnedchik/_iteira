@@ -104,10 +104,17 @@ async def process_user_message(message: Message, state: FSMContext):
                 None
             )
             if last_ai_message:
-                await message.answer(
-                    last_ai_message.content,
-                    parse_mode="Markdown"
-                )
+                # Check if this is a special case where we're asking for the procedure directly
+                if (updated_state.get("client_name") == "клиент" and 
+                    updated_state.get("gender") == "неизвестен" and
+                    "расскажите, какая процедура вас интересует?" in last_ai_message.content):
+                    # Don't send the message asking for procedure as we're already processing the procedure
+                    pass
+                else:
+                    await message.answer(
+                        last_ai_message.content,
+                        parse_mode="Markdown"
+                    )
             else:
                 await message.answer("⚠️ Извините, не удалось сформировать ответ.")
 

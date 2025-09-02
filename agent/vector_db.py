@@ -13,6 +13,8 @@ from langchain_openai import OpenAIEmbeddings
 import shutil
 from uuid import uuid4
 import tiktoken
+import argparse  # Добавляем импорт argparse
+
 
 class VectorDB:
     def __init__(self, persist_directory=CHROMA_PATH):
@@ -77,15 +79,17 @@ class VectorDB:
             print(f"[LOAD_DOCUMENTS] error: {e}")
             raise e
 
-    def create_vector_store(self):
+    def create_vector_store(self, data_path=None):
         """Recreate the vector database."""
         try:
             # Remove the existing ChromaDB
-            if os.path.exists(CHROMA_PATH):
-                shutil.rmtree(CHROMA_PATH)
+            if os.path.exists(self.persist_directory):
+                shutil.rmtree(self.persist_directory)
                 print("[CREATE_VECTOR_STORE] The existing ChromaDB is removed.")
 
-            docs = self.load_documents(DATA_PATH)
+            # Use provided data_path or default DATA_PATH
+            folder_path = data_path if data_path else DATA_PATH
+            docs = self.load_documents(folder_path)
             
             # Создаем базу для первого батча
             batches = self.batch_documents(docs)
@@ -119,5 +123,7 @@ class VectorDB:
 
 
 if __name__ == "__main__":
+    # Используем путь к папке files
+    files_path = os.path.join(BASE_DIR, "files")
     vector_db = VectorDB()
-    vector_db.create_vector_store()
+    vector_db.create_vector_store(files_path)

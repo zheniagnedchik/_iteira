@@ -146,6 +146,28 @@ class ConsultationAgent:
                     except json.JSONDecodeError:
                         logger.warning(f"Ошибка JSONDecode. Ответ модели: {response.content}")
                         pass
+                else:
+                    # If no JSON was found, check if the user is asking about a service directly
+                    # Allow proceeding with default values
+                    service_keywords = [
+                        "стрижка", "маникюр", "педикюр", "массаж", "окрашивание", 
+                        "эпиляция", "косметология", "брови", "ресницы", "уход"
+                    ]
+                    
+                    # Check if user query contains service keywords
+                    user_query_lower = user_query.lower() if user_query else ""
+                    has_service_request = any(keyword in user_query_lower for keyword in service_keywords)
+                    
+                    if has_service_request:
+                        # Set default values and allow proceeding
+                        state["client_name"] = "клиент"
+                        state["gender"] = "неизвестен"
+                        # Don't add a message here as we want to process the service request
+                        return state
+                    else:
+                        # Add the response as is if no service keywords found
+                        state["messages"].append(AIMessage(content=response.content))
+                
                 return state
             
         except Exception as e:
@@ -157,19 +179,26 @@ class ConsultationAgent:
 
     def _route_after_aftorization(self, state: ConsultationState) -> str:
         messages = state.get("messages", [])
+        
+        # Check if we have client name and gender
+        if state.get("client_name") and state.get("gender"):
+            return "has_client_name"
+        
+        # Check if we have default values set (meaning we detected a service request)
+        if state.get("client_name") == "клиент" and state.get("gender") == "неизвестен":
+            return "has_client_name"
+            
+        # Check if the last message is asking for procedure details
         if messages:
             last_message = messages[-1]
             if (
                 isinstance(last_message, AIMessage) and 
                 "расскажите, какая процедура вас интересует?" in last_message.content
             ):
-
                 return "get_client_name"
 
-        if state.get("client_name") and state.get("gender"):
-            return "has_client_name"
-        else:
-            return "need_client_name"
+        # If we don't have client info and haven't set defaults, we need client name
+        return "need_client_name"
         
     def _needs_rag_node(self, state: ConsultationState) -> ConsultationState:
         """
