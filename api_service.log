@@ -263,3 +263,47 @@ INFO:     164.90.234.183:30623 - "POST /webhook/talkme HTTP/1.1" 200 OK
 INFO:     164.90.234.183:53318 - "POST /webhook/talkme HTTP/1.1" 200 OK
 INFO:     164.90.234.183:39389 - "POST /webhook/talkme HTTP/1.1" 200 OK
 INFO:     164.90.234.183:23280 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:46830 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:53367 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [3737499]
+INFO:     Started server process [3741261]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+🚀 API сервер запущен
+INFO:     164.90.234.183:58611 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:48123 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:18040 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:47325 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:44023 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:49255 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:26374 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:37957 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:56065 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:56606 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:52901 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:35871 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:23383 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:32441 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:53138 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:19737 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:34089 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:35467 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:63767 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:35766 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:29837 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:56135 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:23588 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:22969 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     64.62.197.152:36402 - "GET / HTTP/1.1" 200 OK
+INFO:     64.62.197.158:44023 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     164.90.234.183:65216 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     64.62.197.163:6475 - "GET /?format=json HTTP/1.1" 200 OK
+INFO:     164.90.234.183:48996 - "POST /webhook/talkme HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     164.90.234.183:58328 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     64.62.197.152:16164 - "GET /geoserver/web/ HTTP/1.1" 404 Not Found
+INFO:     164.90.234.183:24773 - "POST /webhook/talkme HTTP/1.1" 200 OK

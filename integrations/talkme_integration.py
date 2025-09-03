@@ -183,36 +183,7 @@ class TalkMeIntegration:
             else:
                 simulate_typing(talkme_msg.token, ttl=15)
             
-            # Если это первое сообщение, отправляем приветствие
-            if not user_state["messages"]:
-                welcome_message = (
-                    "Добро пожаловать! "
-                    "Рады приветствовать Вас в Итейра — сети салонов премиум‑класса. "
-                    "Я — Ваш персональный виртуальный помощник. "
-                    "С удовольствием проконсультирую вас по услугам и помогу с выбором процедуры. "
-                    "Как я могу к Вам обращаться?"
-                )
-                
-                # Добавляем приветствие в историю
-                user_state["messages"].append(AIMessage(content=welcome_message))
-                
-                # Подготавливаем и отправляем через API
-                prepared_message = prepare_message_for_talkme(welcome_message)
-                if self.test_mode:
-                    success = self._simulate_api_call("send_message", talkme_msg.token, prepared_message)
-                else:
-                    success = send_message_to_client(talkme_msg.token, prepared_message)
-                if not success:
-                    logger.error(f"[TALKME] Не удалось отправить приветствие для {talkme_msg.user_id}")
-                    raise HTTPException(status_code=500, detail="Ошибка отправки приветствия")
-                
-                self.session_stats["messages_processed"] += 1
-                return TalkMeResponse(
-                    success=True,
-                    session_id=talkme_msg.session_id,
-                    message="Приветствие отправлено"
-                )
-            
+
             # Добавляем сообщение пользователя в историю
             user_message = HumanMessage(content=talkme_msg.message)
             user_state["messages"].append(user_message)
