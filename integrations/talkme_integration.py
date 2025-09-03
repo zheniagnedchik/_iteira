@@ -234,9 +234,6 @@ class TalkMeIntegration:
                 raise HTTPException(status_code=500, detail="Ошибка обработки агентом")
             
             # Проверяем специальные случаи классификации
-            is_irrelevant = response.get("is_irrelevant", 0)
-            asks_human_support = response.get("asks_human_support", 0)
-            
             # Обновляем состояние пользователя
             self.user_states[talkme_msg.user_id] = response
             
@@ -253,6 +250,45 @@ class TalkMeIntegration:
                             bot_response = msg.content
                             break
             
+            # Парсим переменные классификации из ответа (как в nfkd.py)
+            is_irrelevant = 0
+            asks_human_support = 0
+            
+            # Извлекаем чистый ответ без переменных классификации
+            extracted_llm_response = bot_response
+            
+            # Проверяем наличие переменных классификации
+            import re
+            pattern = r'[\s\S]*?(?=\n.*?query_classification_variables|$)'
+            match_result = re.search(pattern, bot_response)
+            if match_result:
+                extracted_llm_response = bot_response[:match_result.end()]
+                
+                # Ищем строку с переменными классификации
+                pattern_line_with_vars = r'.*query_classification_variables.*\n?'
+                match_result = re.search(pattern_line_with_vars, bot_response)
+                
+                if match_result:
+                    extracted_variables_line = bot_response[match_result.start():match_result.end()]
+                    logger.info(f"[TALKME] Найдены переменные классификации: {extracted_variables_line}")
+                    
+                    # Извлекаем переменную нерелевантности
+                    pattern_irrelevant = r'is_client_question_irrelevant_to_context=(\d)'
+                    irrelevant_match = re.search(pattern_irrelevant, extracted_variables_line)
+                    if irrelevant_match:
+                        is_irrelevant = int(irrelevant_match.group(1))
+                    
+                    # Извлекаем переменную запроса поддержки
+                    pattern_human_support = r'does_client_asks_human_support=(\d)'
+                    human_support_match = re.search(pattern_human_support, extracted_variables_line)
+                    if human_support_match:
+                        asks_human_support = int(human_support_match.group(1))
+                    
+                    logger.info(f"[TALKME] Классификация: irrelevant={is_irrelevant}, human_support={asks_human_support}")
+            
+            # Используем чистый ответ без переменных для отправки клиенту
+            bot_response = extracted_llm_response.strip()
+            
             # Подготавливаем и отправляем ответ через TalkMe API
             prepared_response = prepare_message_for_talkme(bot_response)
             if self.test_mode:
@@ -264,23 +300,64 @@ class TalkMeIntegration:
                 self.session_stats["errors"] += 1
                 raise HTTPException(status_code=500, detail="Ошибка отправки ответа")
             
-            # Обрабатываем специальные случаи завершения сессии
+            # Отправляем коды классификации в TalkMe для счетчиков (БЕЗ завершения диалога)
+            if is_irrelevant == 1:
+                logger.info(f"[TALKME] НЕРЕЛЕВАНТНЫЙ вопрос от клиента {talkme_msg.user_id[:10]}... (отправляем код IRRELEVANT_MESSAGE)")
+                # Отправляем код для инкремента счетчика, но НЕ завершаем диалог
+                if self.test_mode:
+                    self._simulate_api_call("finish_bot", talkme_msg.token, {"code": "IRRELEVANT_MESSAGE"})
+                    logger.info(f"[TALKME] (ТЕСТ) Код IRRELEVANT_MESSAGE отправлен для счетчика")
+                else:
+                    success = finish_custom_bot(talkme_msg.token, "IRRELEVANT_MESSAGE")
+                    if success:
+                        logger.info(f"[TALKME] Код IRRELEVANT_MESSAGE отправлен для инкремента счетчика")
+                    else:
+                        logger.warning(f"[TALKME] Не удалось отправить код IRRELEVANT_MESSAGE")
+            
+            if asks_human_support == 1:
+                logger.info(f"[TALKME] ЗАПРОС ПОДДЕРЖКИ от клиента {talkme_msg.user_id[:10]}... (отправляем код OPERATOR_REQUEST)")
+                # Отправляем код для переключения на оператора, но НЕ завершаем диалог
+                if self.test_mode:
+                    self._simulate_api_call("finish_bot", talkme_msg.token, {"code": "OPERATOR_REQUEST"})
+                    logger.info(f"[TALKME] (ТЕСТ) Код OPERATOR_REQUEST отправлен для переключения на оператора")
+                else:
+                    success = finish_custom_bot(talkme_msg.token, "OPERATOR_REQUEST")
+                    if success:
+                        logger.info(f"[TALKME] Код OPERATOR_REQUEST отправлен для переключения на оператора")
+                    else:
+                        logger.warning(f"[TALKME] Не удалось отправить код OPERATOR_REQUEST")
+            
+            # Проверяем, предлагает ли агент запись (по ключевым словам в ответе)
+            booking_keywords = [
+                "для записи на услугу вы можете",
+                "оставить свой номер телефона", 
+                "администратор свяжется с вами",
+                "контакт передан администратору"
+            ]
+            
+            is_booking_offer = any(keyword.lower() in bot_response.lower() for keyword in booking_keywords)
+            
+            if is_booking_offer:
+                logger.info(f"[TALKME] ПРЕДЛОЖЕНИЕ ЗАПИСИ от агента клиенту {talkme_msg.user_id[:10]}... (отправляем код OPERATOR_REQUEST)")
+                # Отправляем код для переключения на оператора при предложении записи
+                if self.test_mode:
+                    self._simulate_api_call("finish_bot", talkme_msg.token, {"code": "OPERATOR_REQUEST"})
+                    logger.info(f"[TALKME] (ТЕСТ) Код OPERATOR_REQUEST отправлен при предложении записи")
+                else:
+                    success = finish_custom_bot(talkme_msg.token, "OPERATOR_REQUEST")
+                    if success:
+                        logger.info(f"[TALKME] Код OPERATOR_REQUEST отправлен при предложении записи")
+                    else:
+                        logger.warning(f"[TALKME] Не удалось отправить код OPERATOR_REQUEST при предложении записи")
+            
+            # Обрабатываем стандартные случаи завершения диалога
             finish_code = None
             end_conversation = False
             
-            if asks_human_support == 1:
-                finish_code = "get_human"
-                end_conversation = True
-                logger.info(f"[TALKME] Клиент {talkme_msg.user_id[:10]}... просит поддержку человека")
-            elif is_irrelevant == 1:
-                finish_code = "irrelevant_message"
-                end_conversation = True
-                logger.info(f"[TALKME] Нерелевантный вопрос от клиента {talkme_msg.user_id[:10]}...")
-            else:
-                # Проверяем, нужно ли завершить разговор по стандартным правилам
-                end_conversation = self._should_end_conversation(bot_response)
-                if end_conversation:
-                    finish_code = "SUCCESS"
+            # Проверяем стандартные правила завершения разговора (НЕ связанные с классификацией)
+            end_conversation = self._should_end_conversation(bot_response)
+            if end_conversation:
+                finish_code = "SUCCESS"
             
             # Отправляем код завершения если необходимо
             if finish_code:
