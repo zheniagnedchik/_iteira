@@ -226,9 +226,16 @@ class TalkMeIntegration:
                 logger.error(f"[TALKME] Ошибка агента: {agent_error}")
                 # Отправляем сообщение об ошибке пользователю
                 error_message = "Извините, произошла техническая ошибка. Пожалуйста, повторите ваш запрос."
-                send_message_to_client(talkme_msg.token, error_message)
+                if not self.test_mode:
+                    send_message_to_client(talkme_msg.token, error_message)
+                else:
+                    self._simulate_api_call("send_message", talkme_msg.token, error_message)
                 self.session_stats["errors"] += 1
                 raise HTTPException(status_code=500, detail="Ошибка обработки агентом")
+            
+            # Проверяем специальные случаи классификации
+            is_irrelevant = response.get("is_irrelevant", 0)
+            asks_human_support = response.get("asks_human_support", 0)
             
             # Обновляем состояние пользователя
             self.user_states[talkme_msg.user_id] = response
@@ -257,10 +264,37 @@ class TalkMeIntegration:
                 self.session_stats["errors"] += 1
                 raise HTTPException(status_code=500, detail="Ошибка отправки ответа")
             
-            # Проверяем, нужно ли завершить разговор
-            end_conversation = self._should_end_conversation(bot_response)
-            if end_conversation:
-                finish_custom_bot(talkme_msg.token, "SUCCESS")
+            # Обрабатываем специальные случаи завершения сессии
+            finish_code = None
+            end_conversation = False
+            
+            if asks_human_support == 1:
+                finish_code = "get_human"
+                end_conversation = True
+                logger.info(f"[TALKME] Клиент {talkme_msg.user_id[:10]}... просит поддержку человека")
+            elif is_irrelevant == 1:
+                finish_code = "irrelevant_message"
+                end_conversation = True
+                logger.info(f"[TALKME] Нерелевантный вопрос от клиента {talkme_msg.user_id[:10]}...")
+            else:
+                # Проверяем, нужно ли завершить разговор по стандартным правилам
+                end_conversation = self._should_end_conversation(bot_response)
+                if end_conversation:
+                    finish_code = "SUCCESS"
+            
+            # Отправляем код завершения если необходимо
+            if finish_code:
+                if self.test_mode:
+                    self._simulate_api_call("finish_bot", talkme_msg.token, {"code": finish_code})
+                    logger.info(f"[TALKME] (ТЕСТ) Код завершения '{finish_code}' отправлен")
+                else:
+                    success = finish_custom_bot(talkme_msg.token, finish_code)
+                    if success:
+                        logger.info(f"[TALKME] Код завершения '{finish_code}' отправлен успешно")
+                    else:
+                        logger.warning(f"[TALKME] Не удалось отправить код завершения '{finish_code}'")
+                
+                # Очищаем сессию при завершении
                 self._cleanup_session(talkme_msg.user_id)
             
             self.session_stats["messages_processed"] += 1

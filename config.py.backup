@@ -17,4 +17,6 @@ BASE_URL_TALKME = os.getenv("BASE_URL_TALKME", "https://api.talkme.ru/")
 # Paths to the data and the chroma_db
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(BASE_DIR, "data", "knowledge_base")
-CHROMA_PATH = os.path.join(BASE_DIR, "data", "chroma_db")
+# Используем /tmp для базы данных чтобы избежать проблем с правами
+CHROMA_PATH = "/tmp/iteira_chroma_db"
+

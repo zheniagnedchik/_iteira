@@ -9,8 +9,9 @@ from typing import Optional, Dict, Any
 
 logger = logging.getLogger(__name__)
 
-# TalkMe API endpoints (как в nfkd.py)
-BASE_URL_TALKME = "https://lcab.talk-me.ru/json/v1.0/"
+# TalkMe API endpoints через прокси
+PROXY_BASE_URL = "https://oyster-app-9l6qa.ondigitalocean.app/"
+BASE_URL_TALKME = f"{PROXY_BASE_URL}https://lcab.talk-me.ru/json/v1.0/"
 URL_BOT_MESSAGE = f"{BASE_URL_TALKME}customBot/send"
 URL_BOT_SIMULATE_TYPING = f"{BASE_URL_TALKME}customBot/simulateTyping"
 URL_BOT_FINISH = f"{BASE_URL_TALKME}customBot/finish"

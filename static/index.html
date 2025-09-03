@@ -92,19 +92,7 @@
         
         <h2>Управление базой знаний</h2>
         <button class="btn btn-success" onclick="regenerateKB()">Перегенерировать базу знаний</button>
-        <button class="btn btn-primary" onclick="getKBStatus()">Проверить статус</button>
-        <button class="btn btn-primary" onclick="getWatcherStatus()">Статус автоотслеживания</button>
-        <button class="btn btn-primary" onclick="getRegenerationStatus()">Статус перегенерации</button>
-        
-        <div id="watcherStatus" style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 4px; display: none;">
-            <strong>Автоматическое отслеживание файлов:</strong>
-            <span id="watcherStatusText">Проверка...</span>
-        </div>
-        
-        <div id="regenerationStatus" style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 4px; display: none;">
-            <strong>Менеджер перегенерации:</strong>
-            <span id="regenerationStatusText">Проверка...</span>
-        </div>
+        <button class="btn btn-primary" onclick="refreshRAGCache()">Обновить кэш RAG</button>
         
         <h2>Файлы в базе знаний</h2>
         <button class="btn btn-primary" onclick="loadFiles()">Обновить список</button>
@@ -116,7 +104,7 @@
     </div>
 
     <script>
-        const API_BASE = 'http://localhost:8000';
+        const API_BASE = 'http://143.198.132.163:8080';
         
         function showStatus(message, isError = false) {
             const status = document.getElementById('status');
@@ -125,7 +113,7 @@
             status.style.display = 'block';
             setTimeout(() => {
                 status.style.display = 'none';
-            }, 5000);
+            }, 3000);
         }
         
         async function uploadFiles() {
@@ -151,7 +139,7 @@
                 const result = await response.json();
                 
                 if (response.ok) {
-                    showStatus(`Загружено ${result.uploaded_files.length} файлов. База знаний обновлена.`);
+                    showStatus(`Загружено ${result.uploaded_files.length} файлов`);
                     loadFiles();
                     fileInput.value = '';
                 } else {
@@ -251,7 +239,7 @@
                 const result = await response.json();
                 
                 if (response.ok) {
-                    showStatus(result.message);
+                    showStatus('База знаний перегенерирована');
                 } else {
                     showStatus(result.detail || 'Ошибка при перегенерации базы знаний', true);
                 }
@@ -260,63 +248,18 @@
             }
         }
         
-        async function getKBStatus() {
+        async function refreshRAGCache() {
             try {
-                const response = await fetch(`${API_BASE}/knowledge-base/status`);
+                const response = await fetch(`${API_BASE}/knowledge-base/refresh-cache`, {
+                    method: 'POST'
+                });
+                
                 const result = await response.json();
                 
                 if (response.ok) {
-                    const autoWatch = result.auto_watch_enabled ? 'включено' : 'отключено';
-                    showStatus(`База знаний: ${result.knowledge_base_exists ? 'существует' : 'не создана'}, файлов: ${result.files_count}, автоотслеживание: ${autoWatch}`);
+                    showStatus(`RAG кэш обновлен. Документов в базе: ${result.documents_count}`);
                 } else {
-                    showStatus(result.detail || 'Ошибка при получении статуса', true);
-                }
-            } catch (error) {
-                showStatus('Ошибка соединения с сервером', true);
-            }
-        }
-        
-        async function getWatcherStatus() {
-            try {
-                const response = await fetch(`${API_BASE}/knowledge-base/watcher/status`);
-                const result = await response.json();
-                
-                if (response.ok) {
-                    const statusDiv = document.getElementById('watcherStatus');
-                    const statusText = document.getElementById('watcherStatusText');
-                    
-                    statusText.textContent = result.message;
-                    statusDiv.style.display = 'block';
-                    statusDiv.style.backgroundColor = result.enabled ? '#d4edda' : '#f8d7da';
-                    statusDiv.style.color = result.enabled ? '#155724' : '#721c24';
-                    
-                    showStatus(result.message);
-                } else {
-                    showStatus(result.detail || 'Ошибка при получении статуса watcher', true);
-                }
-            } catch (error) {
-                showStatus('Ошибка соединения с сервером', true);
-            }
-        }
-        
-        async function getRegenerationStatus() {
-            try {
-                const response = await fetch(`${API_BASE}/knowledge-base/regeneration/status`);
-                const result = await response.json();
-                
-                if (response.ok) {
-                    const statusDiv = document.getElementById('regenerationStatus');
-                    const statusText = document.getElementById('regenerationStatusText');
-                    
-                    const message = `${result.manager_status}, последняя перегенерация: ${result.last_regeneration_time}`;
-                    statusText.textContent = message;
-                    statusDiv.style.display = 'block';
-                    statusDiv.style.backgroundColor = result.is_regenerating ? '#fff3cd' : '#d4edda';
-                    statusDiv.style.color = result.is_regenerating ? '#856404' : '#155724';
-                    
-                    showStatus(message);
-                } else {
-                    showStatus(result.detail || 'Ошибка при получении статуса перегенерации', true);
+                    showStatus(result.detail || 'Ошибка при обновлении RAG кэша', true);
                 }
             } catch (error) {
                 showStatus('Ошибка соединения с сервером', true);
@@ -326,9 +269,6 @@
         // Загружаем список файлов при загрузке страницы
         window.onload = function() {
             loadFiles();
-            getKBStatus();
-            getWatcherStatus();
-            getRegenerationStatus();
         };
     </script>
 </body>

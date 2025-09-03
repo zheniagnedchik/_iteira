@@ -36,4 +36,8 @@ class ConsultationState(TypedDict):
     client_name: str
     gender: str
     messages: Annotated[list[AnyMessage], add_messages_custom]  # Message history
+    # Поля для классификации сообщений
+    is_irrelevant: int  # 0 - релевантное, 1 - нерелевантное
+    asks_human_support: int  # 0 - нет, 1 - просит поддержку человека
+    classification_response: str  # Ответ от классификатора
 # ---------- END STATE ---------- #

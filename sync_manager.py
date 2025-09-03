@@ -73,8 +73,11 @@ class RegenerationManager:
                 if not os.path.exists(files_path):
                     os.makedirs(files_path, exist_ok=True)
                 
-                # Выполняем перегенерацию
-                self.vector_db.create_vector_store(files_path)
+                # Обеспечиваем правильные права доступа
+                self._ensure_permissions(files_path)
+                
+                # Выполняем мягкую перегенерацию (без удаления директории)
+                self.vector_db.soft_regenerate_vector_store(files_path)
                 self.last_regeneration = current_time
                 
                 print(f"✅ База знаний успешно обновлена в {time.strftime('%H:%M:%S')} (источник: {source})")
@@ -97,6 +100,28 @@ class RegenerationManager:
     def is_busy(self):
         """Проверяет, выполняется ли сейчас перегенерация"""
         return self.is_regenerating
+    
+    def _ensure_permissions(self, files_path):
+        """Обеспечивает правильные права доступа к папкам данных"""
+        import stat
+        
+        # Получаем базовую директорию проекта
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        
+        directories = [
+            os.path.join(base_dir, "data"),
+            os.path.join(base_dir, "data", "chroma_db"),
+            os.path.join(base_dir, "data", "knowledge_base"),
+            files_path
+        ]
+        
+        for directory in directories:
+            try:
+                os.makedirs(directory, exist_ok=True)
+                # Устанавливаем права доступа 777 для папки
+                os.chmod(directory, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+            except Exception as e:
+                print(f"Предупреждение: не удалось установить права для {directory}: {e}")
     
     def get_status(self):
         """Возвращает текущий статус менеджера"""

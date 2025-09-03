@@ -1,0 +1,51 @@
+INFO:     Started server process [3678214]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+🚀 API сервер запущен
+INFO:     37.214.56.139:2204 - "GET / HTTP/1.1" 200 OK
+INFO:     37.214.56.139:2204 - "GET /files HTTP/1.1" 200 OK
+INFO:     164.90.234.183:41613 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:35982 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:44171 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:54278 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     167.94.138.184:42800 - "GET / HTTP/1.1" 200 OK
+INFO:     167.94.138.184:38760 - "GET / HTTP/1.1" 200 OK
+INFO:     167.94.138.184:38770 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     167.94.138.184:35086 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     167.94.138.184:35094 - "GET /robots.txt HTTP/1.1" 404 Not Found
+INFO:     164.90.234.183:20887 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:27983 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:26042 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:45079 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:45257 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:25134 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:19042 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     91.149.165.199:63632 - "GET / HTTP/1.1" 200 OK
+INFO:     91.149.165.199:63632 - "GET /files HTTP/1.1" 200 OK
+INFO:     91.149.165.199:63635 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     91.149.165.199:63642 - "GET /files/%D0%98%D1%82%D0%B5%D0%B8%CC%86%D1%80%D0%B0_%D0%9D%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F%20%D1%83%D1%81%D0%BB%D1%83%D0%B3_RAG%20%282%29.xlsx HTTP/1.1" 200 OK
+INFO:     164.90.234.183:20322 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:58618 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:42784 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:23497 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:18012 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:58168 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:44288 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:41237 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:49131 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     196.251.73.24:50382 - "GET /login HTTP/1.1" 404 Not Found
+INFO:     164.90.234.183:41242 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:26274 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:32014 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     205.185.127.70:52266 - "GET /.env_vars_neko.env HTTP/1.1" 404 Not Found
+INFO:     112.46.216.142:20129 - "GET / HTTP/1.1" 200 OK
+INFO:     164.90.234.183:47922 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:57222 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     204.76.203.219:57404 - "GET / HTTP/1.1" 200 OK
+INFO:     138.197.118.33:36180 - "GET /squid-internal-mgr/cachemgr.cgi HTTP/1.1" 404 Not Found
+INFO:     176.65.149.164:57132 - "GET /login HTTP/1.1" 404 Not Found
+INFO:     37.214.56.139:2191 - "GET / HTTP/1.1" 200 OK
+INFO:     37.214.56.139:2191 - "GET /files HTTP/1.1" 200 OK

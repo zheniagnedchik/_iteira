@@ -42,10 +42,129 @@ vector_db = VectorDB()
 @app.on_event("startup")
 async def startup_event():
     print("🚀 API сервер запущен")
+    # Обеспечиваем правильные права доступа при старте
+    ensure_data_directories()
+
+def refresh_rag_cache_internal():
+    """Внутренняя функция для обновления RAG кэша"""
+    try:
+        # Очищаем кэш импортов Python для модуля tools
+        import sys
+        if 'agent.tools' in sys.modules:
+            import importlib
+            importlib.reload(sys.modules['agent.tools'])
+        
+        from agent.tools import get_vector_store
+        import chromadb
+        from config import CHROMA_PATH
+        
+        # Создаем новое подключение к векторной базе
+        vector_store = get_vector_store()
+        
+        # Проверяем количество документов
+        client = chromadb.PersistentClient(path=CHROMA_PATH)
+        langchain_col = client.get_collection('langchain')
+        doc_count = langchain_col.count()
+        
+        return {
+            "success": True,
+            "message": "RAG кэш обновлен (с перезагрузкой модуля)",
+            "documents_count": doc_count
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "message": f"Ошибка обновления RAG кэша: {str(e)}",
+            "documents_count": 0
+        }
+
+def ensure_data_directories():
+    """Обеспечивает существование и правильные права доступа к папкам данных"""
+    import stat
+    
+    directories = [
+        os.path.join(BASE_DIR, "data"),
+        os.path.join(BASE_DIR, "data", "chroma_db"),
+        os.path.join(BASE_DIR, "data", "knowledge_base"),
+        FILES_PATH
+    ]
+    
+    for directory in directories:
+        try:
+            os.makedirs(directory, exist_ok=True)
+            # Устанавливаем права доступа 777 для папки
+            os.chmod(directory, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+        except Exception as e:
+            print(f"Предупреждение: не удалось установить права для {directory}: {e}")
+
+def update_knowledge_base_incremental(source="API"):
+    """Инкрементальное обновление базы знаний"""
+    try:
+        # Обеспечиваем правильные права доступа
+        ensure_data_directories()
+        
+        print(f"🔄 Начинаем инкрементальное обновление базы знаний (источник: {source})")
+        
+        # Используем инкрементальное обновление
+        result = vector_db.update_knowledge_base_incrementally(FILES_PATH)
+        
+        if result["status"] == "error":
+            raise HTTPException(status_code=500, detail=result["message"])
+        
+        print(f"✅ База знаний успешно обновлена (источник: {source})")
+        return result
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Ошибка при обновлении базы знаний: {str(e)}")
+
+def add_file_to_knowledge_base(file_path, source="API"):
+    """Добавить конкретный файл в базу знаний"""
+    try:
+        ensure_data_directories()
+        
+        print(f"➕ Добавляем файл в базу знаний: {os.path.basename(file_path)} (источник: {source})")
+        
+        result = vector_db.add_file_to_knowledge_base(file_path)
+        
+        if result["status"] == "error":
+            raise HTTPException(status_code=500, detail=result["message"])
+        
+        print(f"✅ Файл успешно добавлен в базу знаний (источник: {source})")
+        return result
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Ошибка при добавлении файла в базу знаний: {str(e)}")
+
+def remove_file_from_knowledge_base(filename, source="API"):
+    """Удалить конкретный файл из базы знаний"""
+    try:
+        ensure_data_directories()
+        
+        print(f"➖ Удаляем файл из базы знаний: {filename} (источник: {source})")
+        
+        result = vector_db.remove_file_from_knowledge_base(filename)
+        
+        if result["status"] == "error":
+            raise HTTPException(status_code=500, detail=result["message"])
+        
+        print(f"✅ Файл успешно удален из базы знаний (источник: {source})")
+        return result
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Ошибка при удалении файла из базы знаний: {str(e)}")
 
 def regenerate_knowledge_base(source="API"):
-    """Перегенерация базы знаний из файлов"""
+    """Полная перегенерация базы знаний из файлов (для обратной совместимости)"""
     try:
+        # Обеспечиваем правильные права доступа перед перегенерацией
+        ensure_data_directories()
+        
         result = regen_manager.regenerate(FILES_PATH, source)
         
         if result["status"] == "error":
@@ -123,12 +242,19 @@ async def upload_files(files: List[UploadFile] = File(...)):
                 "status": "uploaded"
             })
         
-        # Перегенерируем базу знаний
-        regenerate_result = regenerate_knowledge_base()
+        # Добавляем файлы в базу знаний инкрементально
+        knowledge_base_results = []
+        for file_info in uploaded_files:
+            file_path = os.path.join(FILES_PATH, file_info["name"])
+            kb_result = add_file_to_knowledge_base(file_path)
+            knowledge_base_results.append({
+                "filename": file_info["name"],
+                "knowledge_base_result": kb_result
+            })
         
         return {
             "uploaded_files": uploaded_files,
-            "knowledge_base": regenerate_result
+            "knowledge_base_updates": knowledge_base_results
         }
         
     except Exception as e:
@@ -143,14 +269,15 @@ async def delete_file(filename: str):
         raise HTTPException(status_code=404, detail="Файл не найден")
     
     try:
-        os.remove(file_path)
+        # Сначала удаляем из базы знаний
+        kb_result = remove_file_from_knowledge_base(filename)
         
-        # Перегенерируем базу знаний
-        regenerate_result = regenerate_knowledge_base()
+        # Затем удаляем физический файл
+        os.remove(file_path)
         
         return {
             "message": f"Файл {filename} успешно удален",
-            "knowledge_base": regenerate_result
+            "knowledge_base_result": kb_result
         }
         
     except Exception as e:
@@ -181,8 +308,15 @@ async def delete_all_files():
 
 @app.post("/knowledge-base/regenerate")
 async def regenerate_kb():
-    """Принудительно перегенерировать базу знаний"""
-    return regenerate_knowledge_base()
+    """Принудительно перегенерировать базу знаний (полная перегенерация)"""
+    result = regenerate_knowledge_base()
+    return result
+
+@app.post("/knowledge-base/update")
+async def update_kb():
+    """Инкрементально обновить базу знаний"""
+    result = update_knowledge_base_incremental()
+    return result
 
 @app.get("/knowledge-base/status")
 async def get_kb_status():
@@ -202,6 +336,17 @@ async def get_kb_status():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Ошибка при получении статуса: {str(e)}")
 
+
+
+@app.post("/knowledge-base/refresh-cache")
+async def refresh_rag_cache():
+    """Обновить кэш RAG без перезапуска сервера"""
+    result = refresh_rag_cache_internal()
+    if result["success"]:
+        result["timestamp"] = __import__('datetime').datetime.now().isoformat()
+        return result
+    else:
+        raise HTTPException(status_code=500, detail=result["message"])
 
 
 @app.get("/knowledge-base/regeneration/status")
@@ -240,6 +385,19 @@ async def talkme_clear_session_endpoint(user_id: str):
 async def talkme_clear_all_sessions():
     """Очистка всех Talk Me сессий"""
     return await clear_all_talkme_sessions()
+
+@app.post("/webhook/talkme/debug")
+async def talkme_debug_endpoint(request: Request):
+    """DEBUG: Показать все данные от TalkMe"""
+    body = await request.body()
+    return {
+        "headers": dict(request.headers),
+        "body_raw": body.decode('utf-8', errors='replace'),
+        "body_size": len(body),
+        "url": str(request.url),
+        "method": request.method,
+        "query_params": dict(request.query_params)
+    }
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
