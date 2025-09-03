@@ -205,8 +205,17 @@ def prepare_message_for_talkme(message: str) -> str:
     if len(message) > 4000:
         message = message[:3950] + "... (сообщение обрезано)"
     
-    # Убираем лишние пробелы и переносы
-    message = " ".join(message.split())
+    # Конвертируем переносы строк в HTML <br> для TalkMe
+    message = message.replace('\n', '<br>')
+    
+    # Делаем телефонные номера кликабельными
+    import re
+    phone_pattern = r'(\+375\d{9})'
+    message = re.sub(phone_pattern, r'<a href="tel:\1">\1</a>', message)
+    
+    # Добавляем префикс %html% для TalkMe (как в nfkd.py)
+    if '<br>' in message or '<a href=' in message:
+        message = '%html%' + message
     
     return message
 

@@ -245,3 +245,21 @@ INFO:     164.90.234.183:43759 - "POST /webhook/talkme HTTP/1.1" 200 OK
 INFO:     164.90.234.183:47941 - "POST /webhook/talkme HTTP/1.1" 200 OK
 INFO:     164.90.234.183:30630 - "POST /webhook/talkme HTTP/1.1" 200 OK
 INFO:     164.90.234.183:47794 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:19126 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:38632 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [3735331]
+INFO:     Started server process [3737499]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+🚀 API сервер запущен
+INFO:     164.90.234.183:49183 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:26818 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:51260 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:30623 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:53318 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:39389 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:23280 - "POST /webhook/talkme HTTP/1.1" 200 OK
