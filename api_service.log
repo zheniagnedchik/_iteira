@@ -307,3 +307,227 @@ WARNING:  Invalid HTTP request received.
 INFO:     164.90.234.183:58328 - "POST /webhook/talkme HTTP/1.1" 200 OK
 INFO:     64.62.197.152:16164 - "GET /geoserver/web/ HTTP/1.1" 404 Not Found
 INFO:     164.90.234.183:24773 - "POST /webhook/talkme HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     164.90.234.183:27925 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:24908 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:53131 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     92.42.201.26:51972 - "GET /json/ HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     205.185.127.70:35406 - "GET /.env_vars_meshcentral.env HTTP/1.1" 404 Not Found
+INFO:     164.90.234.183:34717 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:30497 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:19060 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:20443 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:34483 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:55777 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     46.216.114.26:28916 - "GET / HTTP/1.1" 200 OK
+INFO:     46.216.114.26:28916 - "GET /files HTTP/1.1" 200 OK
+INFO:     46.216.114.26:41564 - "GET / HTTP/1.1" 200 OK
+INFO:     46.216.114.26:41564 - "GET /files HTTP/1.1" 200 OK
+INFO:     46.216.114.26:41540 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     46.216.114.26:14867 - "GET /files/%D0%98%D1%82%D0%B5%D0%B8%CC%86%D1%80%D0%B0_%D0%9D%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F%20%D1%83%D1%81%D0%BB%D1%83%D0%B3_RAG%20%282%29.xlsx HTTP/1.1" 200 OK
+INFO:     46.216.114.26:14867 - "GET /files/%D0%98%D1%82%D0%B5%D0%B8%CC%86%D1%80%D0%B0_%D0%B3%D1%80%D1%83%D0%BF%D0%BF%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0%20%D1%83%D1%81%D0%BB%D1%83%D0%B3_RAG%20%282%29.xlsx HTTP/1.1" 200 OK
+INFO:     46.216.114.26:14867 - "GET /files/%D0%98%D1%82%D0%B5%D0%B8%CC%86%D1%80%D0%B0_%D0%BE%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5%20%D1%83%D1%81%D0%BB%D1%83%D0%B3_RAG%20%282%29.xlsx HTTP/1.1" 200 OK
+INFO:     46.216.114.26:14867 - "GET /files/%D0%98%D1%82%D0%B5%D0%B8%CC%86%D1%80%D0%B0_%D0%9E%D0%B1%D0%BE%D1%80%D1%83%D0%B4%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5_RAG%20%282%29.xlsx HTTP/1.1" 200 OK
+INFO:     204.76.203.219:47818 - "GET / HTTP/1.1" 200 OK
+INFO:     46.216.114.26:14349 - "GET /files/%D0%98%D1%82%D0%B5%D0%B8%CC%86%D1%80%D0%B0_%D0%BE%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5%20%D1%83%D1%81%D0%BB%D1%83%D0%B3_RAG%20%282%29.xlsx HTTP/1.1" 200 OK
+INFO:     46.216.114.26:14350 - "GET /files/%D0%98%D1%82%D0%B5%D0%B8%CC%86%D1%80%D0%B0_%D0%BE%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5%20%D1%83%D1%81%D0%BB%D1%83%D0%B3_RAG%20%282%29.xlsx HTTP/1.1" 200 OK
+INFO:     46.216.114.26:17476 - "HEAD /files/%D0%98%D1%82%D0%B5%D0%B8%CC%86%D1%80%D0%B0_%D0%BE%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5%20%D1%83%D1%81%D0%BB%D1%83%D0%B3_RAG%20%282%29.xlsx HTTP/1.1" 405 Method Not Allowed
+INFO:     46.216.114.26:14867 - "GET /files/%D0%98%D1%82%D0%B5%D0%B8%CC%86%D1%80%D0%B0_%D0%B3%D1%80%D1%83%D0%BF%D0%BF%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0%20%D1%83%D1%81%D0%BB%D1%83%D0%B3_RAG%20%282%29.xlsx HTTP/1.1" 200 OK
+INFO:     46.216.114.26:14863 - "GET /files/%D0%98%D1%82%D0%B5%D0%B8%CC%86%D1%80%D0%B0_%D0%B3%D1%80%D1%83%D0%BF%D0%BF%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0%20%D1%83%D1%81%D0%BB%D1%83%D0%B3_RAG%20%282%29.xlsx HTTP/1.1" 200 OK
+INFO:     46.216.114.26:14877 - "HEAD /files/%D0%98%D1%82%D0%B5%D0%B8%CC%86%D1%80%D0%B0_%D0%B3%D1%80%D1%83%D0%BF%D0%BF%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0%20%D1%83%D1%81%D0%BB%D1%83%D0%B3_RAG%20%282%29.xlsx HTTP/1.1" 405 Method Not Allowed
+WARNING:  Invalid HTTP request received.
+INFO:     152.53.209.147:60516 - "GET / HTTP/1.1" 200 OK
+INFO:     152.53.209.147:60532 - "POST /HNAP1/ HTTP/1.1" 404 Not Found
+INFO:     164.90.234.183:57244 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:55068 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:33695 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:38152 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:17556 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     206.168.34.80:45394 - "GET / HTTP/1.1" 200 OK
+INFO:     206.168.34.80:53904 - "GET / HTTP/1.1" 200 OK
+INFO:     206.168.34.80:53914 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     164.90.234.183:27308 - "POST /webhook/talkme HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     206.168.34.80:40604 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     206.168.34.80:50078 - "GET /security.txt HTTP/1.1" 404 Not Found
+INFO:     45.135.193.253:55428 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     152.53.209.147:56956 - "GET / HTTP/1.1" 200 OK
+INFO:     152.53.209.147:56972 - "POST /HNAP1/ HTTP/1.1" 404 Not Found
+INFO:     205.185.127.70:36106 - "GET /.env_vars_hedgedoc.env HTTP/1.1" 404 Not Found
+INFO:     204.76.203.219:45860 - "GET / HTTP/1.1" 200 OK
+INFO:     185.169.4.150:42078 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     173.212.223.233:47586 - "GET /.envrc HTTP/1.1" 404 Not Found
+INFO:     79.124.58.198:55182 - "GET /?XDEBUG_SESSION_START=phpstorm HTTP/1.1" 200 OK
+INFO:     79.124.58.198:54422 - "GET /actuator/gateway/routes HTTP/1.1" 404 Not Found
+INFO:     205.185.127.70:44924 - "GET /.env_vars_gitea.env HTTP/1.1" 404 Not Found
+INFO:     45.135.193.253:53198 - "GET / HTTP/1.1" 200 OK
+INFO:     204.76.203.219:33044 - "GET / HTTP/1.1" 200 OK
+INFO:     151.235.189.182:48263 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     205.185.127.70:41788 - "GET /.env_vars_flame.env HTTP/1.1" 404 Not Found
+INFO:     20.65.195.49:36610 - "GET /manager/text/list HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     2.183.103.38:36412 - "GET / HTTP/1.1" 200 OK
+INFO:     45.79.207.181:48899 - "GET / HTTP/1.1" 200 OK
+INFO:     45.135.193.253:46470 - "GET / HTTP/1.1" 200 OK
+INFO:     66.228.53.204:50584 - "GET / HTTP/1.1" 200 OK
+INFO:     204.76.203.219:38970 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     205.185.127.70:60532 - "GET /.env_vars_firefly.env HTTP/1.1" 404 Not Found
+INFO:     172.202.117.177:56408 - "GET / HTTP/1.1" 200 OK
+INFO:     204.76.203.219:54198 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     118.194.228.167:45704 - "GET / HTTP/1.1" 200 OK
+INFO:     118.194.228.167:45718 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     118.194.228.167:45730 - "GET /robots.txt HTTP/1.1" 404 Not Found
+INFO:     118.194.228.167:45732 - "GET /sitemap.xml HTTP/1.1" 404 Not Found
+INFO:     118.194.228.167:50602 - "GET /config.json HTTP/1.1" 404 Not Found
+INFO:     118.194.228.167:50604 - "GET /sse HTTP/1.1" 404 Not Found
+INFO:     118.194.228.167:50612 - "GET /mcp HTTP/1.1" 404 Not Found
+INFO:     118.194.228.167:50624 - "GET /mcp-sse HTTP/1.1" 404 Not Found
+INFO:     176.65.149.165:32984 - "POST /goform/set_LimitClient_cfg HTTP/1.1" 404 Not Found
+INFO:     45.135.193.253:57312 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     205.185.127.70:53004 - "GET /.env_vars_firefly_db.env HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     147.185.132.67:51680 - "GET / HTTP/1.0" 200 OK
+INFO:     204.76.203.219:48700 - "GET / HTTP/1.1" 200 OK
+INFO:     176.65.149.162:53374 - "POST /goform/set_LimitClient_cfg HTTP/1.1" 404 Not Found
+INFO:     204.76.203.61:39160 - "POST /goform/set_LimitClient_cfg HTTP/1.1" 404 Not Found
+INFO:     64.225.101.76:27717 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     45.180.237.82:41571 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     204.76.203.61:38282 - "POST /goform/set_LimitClient_cfg HTTP/1.1" 404 Not Found
+INFO:     205.185.127.70:46480 - "GET /.env_vars_code-server.env HTTP/1.1" 404 Not Found
+INFO:     87.236.176.185:46113 - "GET / HTTP/1.1" 200 OK
+INFO:     204.76.203.219:35534 - "GET / HTTP/1.1" 200 OK
+INFO:     45.135.193.253:54570 - "GET / HTTP/1.1" 200 OK
+INFO:     147.185.132.195:63818 - "GET / HTTP/1.1" 200 OK
+INFO:     167.94.138.184:40596 - "GET / HTTP/1.1" 200 OK
+INFO:     167.94.138.184:38496 - "GET / HTTP/1.1" 200 OK
+INFO:     167.94.138.184:51902 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     167.94.138.184:51980 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     167.94.138.184:51988 - "GET /.well-known/security.txt HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     118.99.106.48:2606 - "GET / HTTP/1.1" 200 OK
+INFO:     204.76.203.61:57250 - "POST /goform/set_LimitClient_cfg HTTP/1.1" 404 Not Found
+INFO:     65.49.1.52:13964 - "GET / HTTP/1.1" 200 OK
+INFO:     65.49.1.52:24901 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     65.49.1.54:7617 - "GET /?format=json HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     65.49.1.52:30280 - "GET /geoserver/web/ HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     104.131.8.56:38826 - "GET /squid-internal-mgr/cachemgr.cgi HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     138.68.96.155:52686 - "GET / HTTP/1.1" 200 OK
+INFO:     138.68.96.155:52688 - "GET /download/powershell/ HTTP/1.1" 404 Not Found
+INFO:     138.68.96.155:52690 - "GET /get.php HTTP/1.1" 404 Not Found
+INFO:     3.132.23.201:53372 - "GET / HTTP/1.1" 200 OK
+INFO:     3.132.23.201:39584 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     205.185.127.70:55866 - "GET /.env_vars_bookstack.env HTTP/1.1" 404 Not Found
+INFO:     35.172.212.40:53118 - "GET / HTTP/1.1" 200 OK
+INFO:     204.76.203.219:35642 - "GET / HTTP/1.1" 200 OK
+INFO:     37.214.56.139:2039 - "GET / HTTP/1.1" 200 OK
+INFO:     37.214.56.139:2039 - "GET /files HTTP/1.1" 200 OK
+INFO:     37.214.56.139:2033 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     167.94.145.99:51120 - "GET / HTTP/1.1" 200 OK
+INFO:     167.94.145.99:41864 - "GET / HTTP/1.1" 200 OK
+INFO:     167.94.145.99:41876 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     167.94.145.99:41928 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     167.94.145.99:41946 - "GET /sitemap.xml HTTP/1.1" 404 Not Found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [3741261]
+INFO:     Started server process [3767377]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+🚀 API сервер запущен
+INFO:     164.90.234.183:49031 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:35048 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:35863 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:51893 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:61388 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:20040 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:37945 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:50025 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:22169 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:32371 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:25126 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     45.135.193.253:36570 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     204.76.203.61:47614 - "POST /goform/set_LimitClient_cfg HTTP/1.1" 404 Not Found
+INFO:     205.185.127.70:50086 - "GET /.env.txt HTTP/1.1" 404 Not Found
+INFO:     204.76.203.219:53068 - "GET / HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [3767377]
+INFO:     Started server process [3782371]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+🚀 API сервер запущен
+INFO:     164.90.234.183:45347 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:17299 - "POST /webhook/talkme HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     164.90.234.183:57524 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     204.76.203.61:58954 - "POST /goform/set_LimitClient_cfg HTTP/1.1" 404 Not Found
+INFO:     164.90.234.183:28483 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:35735 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:53570 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:48874 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:48898 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [3782371]
+INFO:     Started server process [3786273]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+🚀 API сервер запущен
+INFO:     164.90.234.183:44870 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:32087 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:58351 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [3786273]
+INFO:     Started server process [3787560]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+🚀 API сервер запущен
+INFO:     164.90.234.183:57598 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:49888 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:17993 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:23021 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:30128 - "POST /webhook/talkme HTTP/1.1" 200 OK
+INFO:     164.90.234.183:17304 - "POST /webhook/talkme HTTP/1.1" 200 OK
